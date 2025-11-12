@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan de estudio — De Platón a Flusser (12–26 de noviembre)</title>
+  <style>
+    :root{
+      --bg:#0f1115;--panel:#151823;--ink:#e8ebf7;--muted:#a7b0c2;--faint:#73809a;--accent:#65d6a3;--accent-2:#7aa8ff;--warn:#ffd166;--rose:#ff6b8a;
+      --ring:0 0 0 1.5px rgba(122,168,255,.55),0 0 0 8px rgba(122,168,255,.10)
+    }
+    html,body{background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Apple Color Emoji,Noto Color Emoji,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    a{color:var(--accent-2);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:2rem auto;padding:0 1rem}
+    header{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+    .title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;letter-spacing:.2px}
+    .subtitle{color:var(--muted);font-size:.95rem}
+    .badge{border:1px solid #2a2f3d;border-radius:999px;padding:.35rem .7rem;background:linear-gradient(180deg,#161a25,#111521);color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media(min-width:860px){.grid{grid-template-columns:280px 1fr}}
+    .panel{background:linear-gradient(180deg,#151823,#111521);border:1px solid #1f2432;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);}
+    .panel .hd{padding:1rem 1.1rem;border-bottom:1px solid #20273a}
+    .panel .bd{padding:1rem 1.1rem}
+    .toc a{display:block;padding:.55rem .7rem;border-radius:10px;color:var(--muted)}
+    .toc a:hover{background:#14192a;color:var(--ink)}
+    .toc .day{font-size:.82rem;color:var(--faint)}
+    .toc .now{color:var(--accent);font-weight:700}
+
+    .cards{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media(min-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
+
+    .card{position:relative;background:radial-gradient(1200px 400px at -10% -20%, rgba(122,168,255,.07), transparent),
+                            radial-gradient(900px 360px at 110% -30%, rgba(101,214,163,.08), transparent),
+                            linear-gradient(180deg,#151823,#111521);
+      border:1px solid #1f2432;border-radius:16px;overflow:hidden}
+    .card .hd{display:flex;align-items:baseline;justify-content:space-between;gap:.75rem;padding:1rem 1.1rem;border-bottom:1px dashed #263046}
+    .card h3{margin:0;font-size:1.05rem}
+    .date{color:var(--faint);font-weight:600;letter-spacing:.3px}
+    .tag{font-size:.75rem;border:1px solid #2a3248;border-radius:999px;padding:.15rem .5rem;color:var(--muted)}
+    .pill{display:inline-flex;gap:.5ch;align-items:center;font-size:.75rem;border:1px solid #2a3248;border-radius:999px;padding:.15rem .6rem;color:var(--muted)}
+    .bd{padding:1rem 1.1rem;display:grid;gap:.8rem}
+    .bd h4{margin:.6rem 0 .2rem 0;font-size:.9rem;color:var(--accent)}
+    .bd ul{margin:.1rem 0 .4rem 1.2rem}
+    .bd li{margin:.18rem 0}
+    .key{color:var(--warn)}
+    .conn{color:var(--accent-2)}
+    .todo{display:flex;gap:.5rem;align-items:center}
+    input[type="checkbox"]{width:1.05rem;height:1.05rem;accent-color:var(--accent)}
+
+    .footer{margin:2rem 0 1rem;color:var(--muted);font-size:.92rem}
+    .hint{color:var(--faint);font-size:.86rem}
+
+    .sticky{position:sticky;top:1rem}
+    .btn{display:inline-flex;align-items:center;gap:.55rem;border:1px solid #2a2f3d;border-radius:12px;padding:.6rem .85rem;background:linear-gradient(180deg,#171b26,#121622);cursor:pointer}
+    .btn:focus{outline:none;box-shadow:var(--ring)}
+    .kpi{display:flex;gap:1rem;flex-wrap:wrap}
+    .kpi .box{background:#121622;border:1px solid #20273a;border-radius:12px;padding:.6rem .75rem}
+    .kpi strong{font-size:1.05rem}
+      /* --- Single-day view --- */
+    .cards.single .card{display:none}
+    .cards.single .card.active{display:block}
+    .toc a.active{background:#14192a;color:var(--ink);border-left:3px solid var(--accent)}
+    .controls{display:flex;gap:.5rem;align-items:center}
+    .controls .btn{font-size:.9rem}
+    .summary-panel .hd{display:flex;justify-content:space-between;align-items:center}
+    .summary-panel .bd{line-height:1.6}
+    .summary-panel h4{margin:.6rem 0 .2rem 0;color:var(--accent)}
+    .summary-panel p{margin:.35rem 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="title">Plan de estudio — De Platón a Flusser</div>
+        <div class="subtitle">Del 12 al 26 de noviembre · Cronológico, con conexiones temáticas</div>
+      </div>
+      <div class="kpi">
+        <div class="box"><strong id="doneCount">0</strong> / <span id="totalCount">0</span> tareas</div>
+        <button class="btn" id="resetBtn" title="Borrar progreso">↺ Reset</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Sidebar TOC -->
+      <aside class="panel sticky">
+        <div class="hd"><strong>Índice & seguimiento</strong></div>
+        <div class="bd toc" id="toc"></div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="cards" id="cards">
+
+        <!-- Semana 1 -->
+        <!-- 12-13 Platón -->
+        <section class="card" id="d-12">
+          <div class="hd">
+            <h3>Platón — La República, Libro X</h3>
+            <div>
+              <span class="date">Mar 12 · Mié 13</span>
+              <span class="tag">Antigüedad</span>
+            </div>
+          </div>
+          <div class="bd">
+            <div>
+              <h4>Lectura</h4>
+              <ul>
+                <li>La <em>República</em>, Libro X (arte como mímesis, expulsión de los poetas)</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="key">Ideas clave</h4>
+              <ul>
+                <li>El arte es <strong>copia de una copia</strong>: el artesano copia la Idea; el artista copia al artesano.</li>
+                <li>La mímesis nos aleja de la <strong>verdad</strong> y fomenta lo irracional.</li>
+                <li>Primacía de la <strong>Forma/Idea</strong> sobre lo sensible.</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="conn">Conexiones</h4>
+              <ul>
+                <li>Contrapunto con Aristóteles: la mímesis como <em>conocimiento</em>, no engaño.</li>
+                <li>Heidegger invertirá la sospecha: el arte puede <em>desocultar</em> la verdad.</li>
+                <li>Flusser: el <strong>diseño</strong> hace de la forma un modo de pensar, no un merodeo de la verdad.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Tareas</h4>
+              <label class="todo"><input type="checkbox"> Leer el Libro X con foco en mímesis.</label>
+              <label class="todo"><input type="checkbox"> Esquematizar “Idea → Objeto → Imagen”.</label>
+              <label class="todo"><input type="checkbox"> Nota: ¿qué pierde/gana el diseño si es “copia”?</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 14-15 Aristóteles -->
+        <section class="card" id="d-14">
+          <div class="hd">
+            <h3>Aristóteles — Poética (selección)</h3>
+            <div>
+              <span class="date">Jue 14 · Vie 15</span>
+              <span class="tag">Antigüedad</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li><em>Poética</em>: capítulos sobre mímesis, verosímil y trama</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>La mímesis revela lo <strong>universal</strong> a través de lo particular.</li>
+              <li>El placer estético se vincula con el <strong>reconocimiento</strong> (catharsis).</li>
+              <li>Orden y <strong>forma</strong> (trama) como principio de inteligibilidad.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Corrige a Platón: el arte no engaña, <strong>enseña</strong>.</li>
+              <li>Prefigura a Heidegger: el arte <em>muestra</em> verdad.</li>
+              <li>En diseño: forma que <strong>hace comprensible</strong> (información → sentido).</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Leer selección indicada.</label>
+            <label class="todo"><input type="checkbox"> Mapa: Platón (sospecha) vs. Aristóteles (confianza).</label>
+            <label class="todo"><input type="checkbox"> Ejemplo propio: una interfaz que “enseña” al usarse.</label>
+          </div>
+        </section>
+
+        <!-- 16 Kant -->
+        <section class="card" id="d-16">
+          <div class="hd">
+            <h3>Kant — Crítica del Juicio (bello & sublime)</h3>
+            <div>
+              <span class="date">Sáb 16</span>
+              <span class="tag">Modernidad</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li><em>Analítica de lo bello</em> y <em>de lo sublime</em> (selección)</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>El juicio estético es <strong>subjetivo</strong>, pero reclama <strong>validez universal</strong>.</li>
+              <li><em>Libre juego</em> de imaginación y entendimiento.</li>
+              <li>Autonomía del gusto vs. finalidad sin fin.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Introduce la tensión <strong>libertad/función</strong> que hereda el diseño moderno.</li>
+              <li>Flusser criticará reducir lo estético a placer: la forma <em>funciona</em> como <strong>código</strong>.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Lectura focalizada (libre juego, universalidad).</label>
+            <label class="todo"><input type="checkbox"> Ejemplo: producto bello, útil y “sin fin”.</label>
+          </div>
+        </section>
+
+        <!-- 17 Hegel -->
+        <section class="card" id="d-17">
+          <div class="hd">
+            <h3>Hegel — Estética (Introducción)</h3>
+            <div>
+              <span class="date">Dom 17</span>
+              <span class="tag">Modernidad</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li><em>Estética</em>, Introducción (misión histórica del arte)</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>El arte es manifestación sensible del <strong>Espíritu</strong>.</li>
+              <li>Historicidad: formas del arte responden a épocas.</li>
+              <li>El arte puede volverse “cosa del pasado” como <em>máxima</em> verdad.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Transición hacia la técnica moderna como nuevo escenario del sentido.</li>
+              <li>Antecede a Heidegger: obra que <strong>instala mundo</strong>.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Leer Introducción y anotar “misión del arte”.</label>
+            <label class="todo"><input type="checkbox"> Línea temporal: formas del arte por época.</label>
+          </div>
+        </section>
+
+        <!-- Semana 2 -->
+        <!-- 18 Nietzsche -->
+        <section class="card" id="d-18">
+          <div class="hd">
+            <h3>Nietzsche — El origen de la tragedia (1–5)</h3>
+            <div>
+              <span class="date">Lun 18</span>
+              <span class="tag">Contemporaneidad temprana</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li>Prólogo y caps. 1–5 (Apolo vs. Dionisio)</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>Apollo = forma/medida · Dionisio = exceso/vida.</li>
+              <li>El arte afirma la vida, no es copia.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Anticipa diseño como <strong>creación de sentido</strong> (no mímesis).</li>
+              <li>Puente a Heidegger: verdad como <em>desocultamiento</em>, no espejo.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Leer 1–5 y esquema Apolo/Dionisio.</label>
+            <label class="todo"><input type="checkbox"> Ejemplo: UI apolínea vs. dionisíaca.</label>
+          </div>
+        </section>
+
+        <!-- 19-20 Heidegger -->
+        <section class="card" id="d-19">
+          <div class="hd">
+            <h3>Heidegger — El origen de la obra de arte</h3>
+            <div>
+              <span class="date">Mar 19 · Mié 20</span>
+              <span class="tag">Fenomenología</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li>Ensayo completo (edición estándar)</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>La obra abre un <strong>claro</strong>: hace <em>verdad</em> en lo sensible.</li>
+              <li>Mundo vs. tierra: tensión productiva en la obra.</li>
+              <li>Sentido <strong>ontológico</strong>: del ser, no solo del uso.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Responde a Platón: el arte no oculta, <strong>desoculta</strong>.</li>
+              <li>Prepara a Flusser: los objetos configurados <em>piensan por nosotros</em>.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Lectura total con notas “mundo/tierra”.</label>
+            <label class="todo"><input type="checkbox"> Ejemplo: objeto que “abre mundo”.</label>
+          </div>
+        </section>
+
+        <!-- 21 Gadamer -->
+        <section class="card" id="d-21">
+          <div class="hd">
+            <h3>Gadamer — Verdad y método (arte)</h3>
+            <div>
+              <span class="date">Jue 21</span>
+              <span class="tag">Hermenéutica</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li>Sección sobre la <em>experiencia del arte</em> y fusión de horizontes</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>Comprender es un <strong>encuentro</strong> transformador.</li>
+              <li>Tradición y prejuicio como condiciones de sentido.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>El diseño como <strong>mediación</strong> de comprensión (no solo uso).</li>
+              <li>Puente a Rancière: configurar lo visible = configurar lo decible.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Lectura y glosario (prejuicio, juego, experiencia).</label>
+            <label class="todo"><input type="checkbox"> Ejemplo: interfaz que “fusiona horizontes”.</label>
+          </div>
+        </section>
+
+        <!-- 22 Rancière -->
+        <section class="card" id="d-22">
+          <div class="hd">
+            <h3>Rancière — El reparto de lo sensible</h3>
+            <div>
+              <span class="date">Vie 22</span>
+              <span class="tag">Estética & política</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li>Introducción y primer capítulo</li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>Las artes reconfiguran <strong>lo visible/decible</strong>.</li>
+              <li>Lo estético como <strong>régimen</strong> (no estilo): organiza la percepción común.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>Del juicio (Kant) a la <strong>distribución</strong> de visibilidad (política de la forma).</li>
+              <li>Con Flusser: la imagen técnica como <strong>programa</strong> de lo visible.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Resumen de “régimen estético”.</label>
+            <label class="todo"><input type="checkbox"> Caso: diseño que silencia vs. que visibiliza.</label>
+          </div>
+        </section>
+
+        <!-- 23-24 Flusser -->
+        <section class="card" id="d-23">
+          <div class="hd">
+            <h3>Flusser — Filosofía del diseño (I & IX)</h3>
+            <div>
+              <span class="date">Sáb 23 · Dom 24</span>
+              <span class="tag">Filosofía del diseño</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Lectura</h4>
+            <ul>
+              <li>Cap. I: <em>Acerca de la palabra "diseño"</em></li>
+              <li>Cap. IX: <em>El diseño: un obstáculo para eliminar obstáculos</em></li>
+            </ul>
+            <h4 class="key">Ideas clave</h4>
+            <ul>
+              <li>El diseño como <strong>proyecto</strong> que materializa pensamiento.</li>
+              <li>Los objetos “<strong>piensan</strong> por nosotros”: programan comportamientos.</li>
+              <li>Diferencia entre diseñar, fabricar y <strong>programar</strong>.</li>
+            </ul>
+            <h4 class="conn">Conexiones</h4>
+            <ul>
+              <li>De Platón (Forma) a Flusser: la <strong>forma</strong> ya no copia, <em>codifica</em>.</li>
+              <li>Heidegger + Rancière: la forma abre mundo y distribuye lo sensible.</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Lectura atenta de I y IX.</label>
+            <label class="todo"><input type="checkbox"> Lista: 5 objetos que “piensan” (cómo programan).</label>
+          </div>
+        </section>
+
+        <!-- 25 Síntesis -->
+        <section class="card" id="d-25">
+          <div class="hd">
+            <h3>Día de síntesis — Mapas y ejes</h3>
+            <div>
+              <span class="date">Lun 25</span>
+              <span class="tag">Integración</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Actividades</h4>
+            <ul>
+              <li>Mapa conceptual: <strong>Idea → Forma → Experiencia → Comunicación</strong>.</li>
+              <li>Ejes: <strong>Verdad → Interpretación → Diseño</strong>.</li>
+              <li>Tabla comparativa: Platón / Aristóteles / Kant / Hegel / Nietzsche / Heidegger / Gadamer / Rancière / Flusser.</li>
+            </ul>
+            <h4>Preguntas guía</h4>
+            <ul>
+              <li>¿Qué <em>hace</em> el arte según cada autor?</li>
+              <li>¿Dónde ubica la <strong>verdad</strong> (Ideas, juicio, mundo, interpretación, código)?</li>
+              <li>¿Qué cambia cuando aparece el <strong>diseño</strong> como lenguaje?</li>
+            </ul>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Completar mapa y tabla comparativa.</label>
+            <label class="todo"><input type="checkbox"> Redactar 5 conclusiones propias (100–150 palabras).</label>
+          </div>
+        </section>
+
+        <!-- 26 Revisión -->
+        <section class="card" id="d-26">
+          <div class="hd">
+            <h3>Día de revisión — Comprensión profunda</h3>
+            <div>
+              <span class="date">Mar 26</span>
+              <span class="tag">Repaso final</span>
+            </div>
+          </div>
+          <div class="bd">
+            <h4>Consigna de cierre</h4>
+            <p><em>“Desde Platón hasta Flusser, el arte pasó de ser una copia de la verdad a ser la forma en que la pensamos.”</em></p>
+            <h4>Tareas</h4>
+            <label class="todo"><input type="checkbox"> Escribir 1 página desarrollando la consigna.</label>
+            <label class="todo"><input type="checkbox"> Releer notas/ mapas; marcar dudas puntuales.</label>
+            <label class="todo"><input type="checkbox"> Preparar 3 ejemplos de diseño que “piensan”.</label>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Summary panel -->
+    <section class="panel summary-panel" id="summaryPanel" style="display:none;">
+      <div class="hd">
+        <strong>Resumen del día</strong>
+        <div class="controls">
+          <button class="btn" id="showAllBtn" title="Ver todos los días">👁️ Mostrar todos</button>
+        </div>
+      </div>
+      <div class="bd" id="summaryBody"></div>
+    </section>
+
+    <section class="panel footer">
+      <div class="hd"><strong>Hilos temáticos (resumen)</strong></div>
+      <div class="bd">
+        <ul>
+          <li><strong>Verdad:</strong> Idea (Platón) → Juicio (Kant) → Espíritu/Historia (Hegel) → Desocultamiento (Heidegger) → Interpretación (Gadamer) → Distribución de lo sensible (Rancière) → Código/diseño (Flusser).</li>
+          <li><strong>Arte:</strong> copia (sospecha) → representación → experiencia/acontecimiento → lenguaje que reordena lo visible.</li>
+          <li><strong>Diseño:</strong> de función y gusto → a <strong>forma que codifica</strong> y programa mundos de uso.</li>
+        </ul>
+        <p class="hint">Tip: Imprimí esta página en PDF para tener tu chuleta de repaso.</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Polyfills for older preview engines
+    if (!Array.from) { Array.from = function (nl) { return [].slice.call(nl); }; }
+
+    // --- Build TOC from cards
+    var cards = Array.from(document.querySelectorAll('.card'))
+    var toc = document.getElementById('toc')
+    var cardsGrid = document.getElementById('cards')
+
+    function makeLink(c){
+      var h3=c.querySelector('h3').textContent.trim()
+      var date=c.querySelector('.date').textContent.trim()
+      var a=document.createElement('a')
+      a.href='#'+c.id
+      a.setAttribute('data-target', c.id)
+      a.innerHTML='<div class="day">'+date+'</div>'+h3
+      return a
+    }
+    cards.forEach(function(c){ toc.appendChild(makeLink(c)) })
+
+    // --- Summaries per day
+    var summaries={
+      'd-12': '<h4>Platón</h4><p>El arte es copia de una copia: la imagen se aleja de la Idea y seduce a la parte irracional. La verdad reside en el ámbito inteligible; lo sensible es sospechoso. Para el diseño, esta mirada funciona como advertencia: si la forma no refiere a un criterio de verdad, puede volverse mero espejismo.</p>',
+      'd-14': '<h4>Aristóteles</h4><p>La mímesis no engaña: enseña lo universal a través de lo particular. El placer estético es reconocimiento y orden de la trama. Traducido a diseño: la forma bien compuesta vuelve el mundo comprensible.</p>',
+      'd-16': '<h4>Kant</h4><p>El juicio de gusto es subjetivo pero aspira a validez universal por el libre juego de imaginación y entendimiento. Tensión entre libertad y función que marcará al diseño moderno.</p>',
+      'd-17': '<h4>Hegel</h4><p>El arte es manifestación sensible del Espíritu y tiene una misión histórica. Las formas cambian con las épocas; la verdad se encarna en configuraciones históricas.</p>',
+      'd-18': '<h4>Nietzsche</h4><p>Apolo (medida) y Dionisio (exceso) como polos vitales del arte. Crear no copia: afirma la vida. En diseño, pensar experiencias que no solo representen, sino intensifiquen el vivir.</p>',
+      'd-19': '<h4>Heidegger</h4><p>La obra abre un claro donde la verdad acontece. Mundo vs. tierra en tensión. Más que utensilio, el objeto instala un mundo. Pista directa hacia la idea de objetos que “piensan”.</p>',
+      'd-21': '<h4>Gadamer</h4><p>Comprender es encuentro: la obra nos transforma en la fusión de horizontes. El diseño como mediación hermenéutica, no solo uso.</p>',
+      'd-22': '<h4>Rancière</h4><p>El arte reconfigura la distribución de lo sensible: qué se vuelve visible y decible. La forma tiene política.</p>',
+      'd-23': '<h4>Flusser</h4><p>El diseño codifica: los objetos programan comportamientos y piensan por nosotros. Diferencia entre fabricar y programar. De la Forma a la forma-código.</p>',
+      'd-25': '<h4>Síntesis</h4><p>De Idea → Forma → Experiencia → Comunicación; de Verdad → Interpretación → Diseño. El hilo: la forma pasa de sospechosa a condición de pensamiento.</p>',
+      'd-26': '<h4>Revisión</h4><p>Redactá la tesis: “Del espejo a la codificación: el arte como forma de pensar el mundo”. Tres ejemplos de diseño que abren mundo y programan hábitos.</p>'
+    }
+
+    // --- Checklist persistence
+    var KEY='plan_platon_flusser_progress_v1'
+    var allChecks=Array.from(document.querySelectorAll('input[type="checkbox"]'))
+    var totalCount=document.getElementById('totalCount')
+    var doneCount=document.getElementById('doneCount')
+
+    function loadChecks(){
+      var saved
+      try { saved=JSON.parse(localStorage.getItem(KEY)||'{}') } catch(e){ saved={} }
+      allChecks.forEach(function(ch,i){ ch.setAttribute('data-idx', i); ch.checked=!!saved[i] })
+      updateCounts()
+    }
+    function updateCounts(){
+      var done=0
+      allChecks.forEach(function(ch){ if(ch.checked) done++ })
+      doneCount.textContent=done
+      totalCount.textContent=allChecks.length
+    }
+    function saveChecks(){
+      var map={}
+      allChecks.forEach(function(ch){ map[ch.getAttribute('data-idx')]=ch.checked })
+      localStorage.setItem(KEY,JSON.stringify(map))
+      updateCounts()
+    }
+    allChecks.forEach(function(ch){ ch.addEventListener('change',saveChecks) })
+
+    // --- Single-day selection
+    var summaryPanel=document.getElementById('summaryPanel')
+    var summaryBody=document.getElementById('summaryBody')
+    var showAllBtn=document.getElementById('showAllBtn')
+
+    function selectCard(id){
+      cardsGrid.classList.add('single')
+      cards.forEach(function(c){ c.classList.remove('active') })
+      var target=document.getElementById(id)
+      if(target){
+        target.classList.add('active')
+        Array.from(document.querySelectorAll('.toc a')).forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-target')===id) })
+        // Update summary
+        var html = summaries[id] || '<p>No hay resumen disponible para este bloque.</p>'
+        summaryBody.innerHTML=html
+        summaryPanel.style.display='block'
+        if (target.scrollIntoView) { target.scrollIntoView({behavior:'smooth',block:'start'}) }
+      }
+    }
+
+    function showAll(){
+      cardsGrid.classList.remove('single')
+      cards.forEach(function(c){ c.classList.add('active') })
+      Array.from(document.querySelectorAll('.toc a')).forEach(function(a){ a.classList.remove('active') })
+      summaryPanel.style.display='none'
+    }
+
+    if (showAllBtn) { showAllBtn.addEventListener('click',showAll) }
+
+    // Hook TOC clicks
+    toc.addEventListener('click',function(e){
+      var a=e.target.closest ? e.target.closest('a') : null
+      if(!a) return
+      e.preventDefault()
+      selectCard(a.getAttribute('data-target'))
+    })
+
+    // Initial state: pick today if between 12–26 Nov, else first card
+    function initSelect(){
+      var today=new Date()
+      var m=today.getMonth() // 0-based, Nov=10
+      var d=today.getDate()
+      var map={12:'d-12',13:'d-12',14:'d-14',15:'d-14',16:'d-16',17:'d-17',18:'d-18',19:'d-19',20:'d-19',21:'d-21',22:'d-22',23:'d-23',24:'d-23',25:'d-25',26:'d-26'}
+      var id=(m===10 && map[d])? map[d] : (cards[0]? cards[0].id : null)
+      // Mark matching TOC entry as 'now'
+      Array.from(toc.querySelectorAll('a')).forEach(function(a){
+        var dayEl = a.querySelector('.day')
+        var txt = dayEl ? dayEl.textContent : ''
+        if (m===10 && txt.indexOf(d.toString())>-1) { a.classList.add('now') }
+      })
+      if (id) { selectCard(id) }
+    }
+
+    loadChecks()
+    initSelect()
+
+    // --- Simple runtime test output for debugging
+    try {
+      var kpiBox = document.querySelector('.kpi .box')
+      if (kpiBox) { kpiBox.title = 'JS OK · '+cards.length+' bloques · '+allChecks.length+' tareas'; }
+    } catch(e) {}
+  </script>
+</body>
+</html>
