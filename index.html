@@ -66,6 +66,28 @@
     .summary-panel .bd{line-height:1.6}
     .summary-panel h4{margin:.6rem 0 .2rem 0;color:var(--accent)}
     .summary-panel p{margin:.35rem 0}
+      /* --- Single-day view --- */
+    .cards.single .card{display:none}
+    .cards.single .card.active{display:block}
+    .toc a.active{background:#14192a;color:var(--ink);border-left:3px solid var(--accent)}
+    .controls{display:flex;gap:.5rem;align-items:center}
+    .controls .btn{font-size:.9rem}
+    .summary-panel .hd{display:flex;justify-content:space-between;align-items:center}
+    .summary-panel .bd{line-height:1.6}
+    .summary-panel h4{margin:.6rem 0 .2rem 0;color:var(--accent)}
+    .summary-panel p{margin:.35rem 0}
+
+    /* --- Rest day full-screen vibe (still a .card for navigation) --- */
+    .card.rest{background:radial-gradient(800px 360px at 10% 0%, rgba(101,214,163,.12), transparent),linear-gradient(180deg,#15201a,#0f1713)}
+    .card.rest .bd{min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1rem}
+    .card.rest h2{font-size:clamp(1.3rem,3.2vw,2rem);margin:0}
+    .card.rest p{max-width:60ch;color:var(--muted)}
+    .mantra{font-size:1.05rem;color:var(--accent)}
+
+    /* --- Counter + progress */
+    .daycounter{display:flex;align-items:center;gap:.6rem}
+    .progress{position:relative;width:160px;height:8px;border-radius:999px;background:#1f2533;border:1px solid #2a3248;overflow:hidden}
+    .progress > i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s ease}
   </style>
 </head>
 <body>
@@ -77,6 +99,9 @@
       </div>
       <div class="kpi">
         <div class="box"><strong id="doneCount">0</strong> / <span id="totalCount">0</span> tareas</div>
+        <div class="daycounter"><span id="dayLabel">Día 1 de 15</span><div class="progress" aria-label="progreso"><i id="progressFill"></i></div></div>
+        <button class="btn" id="resetBtn" title="Borrar progreso">↺ Reset</button>
+      </div>
         <button class="btn" id="resetBtn" title="Borrar progreso">↺ Reset</button>
       </div>
     </header>
@@ -382,6 +407,19 @@
           </div>
         </section>
 
+        <!-- 🌙 Rest 1 -->
+        <section class="card rest" id="rest-1">
+          <div class="hd">
+            <h3>Descanso — Respirar ideas (🌿)</h3>
+            <div><span class="date">Día X</span><span class="tag">Descanso</span></div>
+          </div>
+          <div class="bd">
+            <h2>“Las ideas también necesitan aire.”</h2>
+            <p>Volvé a tus esquemas. Mirá dos escenas de una peli o una interfaz y anota qué <em>enseñan</em> (Aristóteles) y qué <em>ocultan</em> (Platón).</p>
+            <div class="mantra">Tarea suave: 15' de paseo sin música. Tres notas rápidas al volver.</div>
+          </div>
+        </section>
+
         <!-- 25 Síntesis -->
         <section class="card" id="d-25">
           <div class="hd">
@@ -407,6 +445,45 @@
             <h4>Tareas</h4>
             <label class="todo"><input type="checkbox"> Completar mapa y tabla comparativa.</label>
             <label class="todo"><input type="checkbox"> Redactar 5 conclusiones propias (100–150 palabras).</label>
+          </div>
+        </section>
+
+        <!-- 🌙 Rest 2 -->
+        <section class="card rest" id="rest-2">
+          <div class="hd">
+            <h3>Descanso — Después de Kant (🌙)</h3>
+            <div><span class="date">Día X</span><span class="tag">Descanso</span></div>
+          </div>
+          <div class="bd">
+            <h2>“Dejá que el libre juego siga jugando.”</h2>
+            <p>Mirada kantiana: elegí un objeto cotidiano y describí por qué nos parece bello sin <em>función</em> explícita. ¿Qué comunica?</p>
+            <div class="mantra">Tarea suave: 1 foto de algo “bello sin fin”.</div>
+          </div>
+        </section>
+
+        <!-- 🌙 Rest 3 -->
+        <section class="card rest" id="rest-3">
+          <div class="hd">
+            <h3>Descanso — Post Heidegger (🪵)</h3>
+            <div><span class="date">Día X</span><span class="tag">Descanso</span></div>
+          </div>
+          <div class="bd">
+            <h2>“Caminar, mirar, dejar que el mundo se abra.”</h2>
+            <p>Elegí un objeto y escribí: ¿qué <em>mundo</em> instala? ¿qué <em>tierra</em> resiste?</p>
+            <div class="mantra">Tarea suave: caminata breve, 10' de notas.</div>
+          </div>
+        </section>
+
+        <!-- 🌙 Rest 4 -->
+        <section class="card rest" id="rest-4">
+          <div class="hd">
+            <h3>Descanso — Cierre y respiración (✨)</h3>
+            <div><span class="date">Día X</span><span class="tag">Descanso</span></div>
+          </div>
+          <div class="bd">
+            <h2>“Lo que entendiste también necesita silencio.”</h2>
+            <p>Repaso libre: 5 frases-verdad que te quedás de todo el recorrido. Prepará 3 ejemplos de diseño que “piensan”.</p>
+            <div class="mantra">Tarea suave: estirate, hidratar, dormir bien.</div>
           </div>
         </section>
 
@@ -457,26 +534,40 @@
   </div>
 
   <script>
-    // Polyfills for older preview engines
+    // Polyfills
     if (!Array.from) { Array.from = function (nl) { return [].slice.call(nl); }; }
+    if (!('closest' in Element.prototype)) {
+      Element.prototype.closest = function (s) {
+        var el = this; do { if (el.matches && el.matches(s)) return el; el = el.parentElement || el.parentNode; } while (el && el.nodeType===1); return null;
+      };
+    }
 
-    // --- Build TOC from cards
-    var cards = Array.from(document.querySelectorAll('.card'))
+    // Grab DOM
+    var allCards = Array.from(document.querySelectorAll('.card'))
     var toc = document.getElementById('toc')
     var cardsGrid = document.getElementById('cards')
+    var dayLabel = document.getElementById('dayLabel')
+    var progressFill = document.getElementById('progressFill')
 
+    // Study sequence (15 días): orden recomendado con descansos
+    var sequenceIds = ['d-12','d-14','rest-1','d-16','rest-2','d-17','d-18','d-19','rest-3','d-21','d-22','d-23','rest-4','d-25','d-26']
+    var seq = sequenceIds.map(function(id){ return document.getElementById(id) }).filter(function(n){return !!n})
+
+    // Number & relabel
+    seq.forEach(function(c, i){ c.setAttribute('data-idx', i); var dateEl=c.querySelector('.date'); if(dateEl){ dateEl.textContent='Día '+(i+1)+' de '+seq.length } })
+
+    // Build TOC from sequence
     function makeLink(c){
       var h3=c.querySelector('h3').textContent.trim()
       var date=c.querySelector('.date').textContent.trim()
       var a=document.createElement('a')
-      a.href='#'+c.id
-      a.setAttribute('data-target', c.id)
+      a.href='#'+c.id; a.setAttribute('data-target', c.id)
       a.innerHTML='<div class="day">'+date+'</div>'+h3
       return a
     }
-    cards.forEach(function(c){ toc.appendChild(makeLink(c)) })
+    seq.forEach(function(c){ toc.appendChild(makeLink(c)) })
 
-    // --- Summaries per day
+    // Summaries (unchanged)
     var summaries={
       'd-12': '<h4>Platón</h4><p>El arte es copia de una copia: la imagen se aleja de la Idea y seduce a la parte irracional. La verdad reside en el ámbito inteligible; lo sensible es sospechoso. Para el diseño, esta mirada funciona como advertencia: si la forma no refiere a un criterio de verdad, puede volverse mero espejismo.</p>',
       'd-14': '<h4>Aristóteles</h4><p>La mímesis no engaña: enseña lo universal a través de lo particular. El placer estético es reconocimiento y orden de la trama. Traducido a diseño: la forma bien compuesta vuelve el mundo comprensible.</p>',
@@ -488,96 +579,96 @@
       'd-22': '<h4>Rancière</h4><p>El arte reconfigura la distribución de lo sensible: qué se vuelve visible y decible. La forma tiene política.</p>',
       'd-23': '<h4>Flusser</h4><p>El diseño codifica: los objetos programan comportamientos y piensan por nosotros. Diferencia entre fabricar y programar. De la Forma a la forma-código.</p>',
       'd-25': '<h4>Síntesis</h4><p>De Idea → Forma → Experiencia → Comunicación; de Verdad → Interpretación → Diseño. El hilo: la forma pasa de sospechosa a condición de pensamiento.</p>',
-      'd-26': '<h4>Revisión</h4><p>Redactá la tesis: “Del espejo a la codificación: el arte como forma de pensar el mundo”. Tres ejemplos de diseño que abren mundo y programan hábitos.</p>'
+      'd-26': '<h4>Revisión</h4><p>Redactá la tesis: “Del espejo a la codificación: el arte como forma de pensar el mundo”. Tres ejemplos de diseño que abren mundo y programan hábitos.</p>',
+      'rest-1': '<h4>Descanso 1</h4><p>Respirar y fijar Platón/Aristóteles. Paseo sin auris, 3 notas.</p>',
+      'rest-2': '<h4>Descanso 2</h4><p>Dejar que Kant decante. Un objeto “bello sin fin”.</p>',
+      'rest-3': '<h4>Descanso 3</h4><p>Caminar y pensar mundo/tierra en un objeto.</p>',
+      'rest-4': '<h4>Descanso 4</h4><p>5 frases-verdad + 3 ejemplos de diseño que piensan.</p>'
     }
 
-    // --- Checklist persistence
-    var KEY='plan_platon_flusser_progress_v1'
+    // Checklist persistence (unchanged key bump for safety)
+    var KEY='plan_platon_flusser_progress_v3'
     var allChecks=Array.from(document.querySelectorAll('input[type="checkbox"]'))
     var totalCount=document.getElementById('totalCount')
     var doneCount=document.getElementById('doneCount')
 
     function loadChecks(){
-      var saved
-      try { saved=JSON.parse(localStorage.getItem(KEY)||'{}') } catch(e){ saved={} }
+      var saved; try { saved=JSON.parse(localStorage.getItem(KEY)||'{}') } catch(e){ saved={} }
       allChecks.forEach(function(ch,i){ ch.setAttribute('data-idx', i); ch.checked=!!saved[i] })
       updateCounts()
     }
     function updateCounts(){
-      var done=0
-      allChecks.forEach(function(ch){ if(ch.checked) done++ })
-      doneCount.textContent=done
-      totalCount.textContent=allChecks.length
+      var done=0; allChecks.forEach(function(ch){ if(ch.checked) done++ })
+      doneCount.textContent=done; totalCount.textContent=allChecks.length
     }
     function saveChecks(){
-      var map={}
-      allChecks.forEach(function(ch){ map[ch.getAttribute('data-idx')]=ch.checked })
-      localStorage.setItem(KEY,JSON.stringify(map))
-      updateCounts()
+      var map={}; allChecks.forEach(function(ch){ map[ch.getAttribute('data-idx')]=ch.checked })
+      localStorage.setItem(KEY,JSON.stringify(map)); updateCounts()
     }
     allChecks.forEach(function(ch){ ch.addEventListener('change',saveChecks) })
 
-    // --- Single-day selection
+    // Selection + nav using sequence
     var summaryPanel=document.getElementById('summaryPanel')
     var summaryBody=document.getElementById('summaryBody')
     var showAllBtn=document.getElementById('showAllBtn')
+    var prevBtn=document.getElementById('prevBtn')
+    var nextBtn=document.getElementById('nextBtn')
 
     function selectCard(id){
       cardsGrid.classList.add('single')
-      cards.forEach(function(c){ c.classList.remove('active') })
+      allCards.forEach(function(c){ c.classList.remove('active') })
       var target=document.getElementById(id)
       if(target){
         target.classList.add('active')
-        Array.from(document.querySelectorAll('.toc a')).forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-target')===id) })
-        // Update summary
+        Array.from(toc.querySelectorAll('a')).forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-target')===id) })
         var html = summaries[id] || '<p>No hay resumen disponible para este bloque.</p>'
-        summaryBody.innerHTML=html
-        summaryPanel.style.display='block'
+        summaryBody.innerHTML=html; summaryPanel.style.display='block'
+        updateNavButtons(); updateDayCounterById(id)
         if (target.scrollIntoView) { target.scrollIntoView({behavior:'smooth',block:'start'}) }
       }
     }
 
-    function showAll(){
-      cardsGrid.classList.remove('single')
-      cards.forEach(function(c){ c.classList.add('active') })
-      Array.from(document.querySelectorAll('.toc a')).forEach(function(a){ a.classList.remove('active') })
-      summaryPanel.style.display='none'
+    function getActiveIndex(){ for (var i=0;i<seq.length;i++){ if(seq[i].classList.contains('active')) return i } return 0 }
+    function selectByIndex(i){ if (i<0) i=0; if (i>seq.length-1) i=seq.length-1; var id = seq[i] ? seq[i].id : null; if (id) selectCard(id) }
+    function updateNavButtons(){ var idx=getActiveIndex(); if (prevBtn) prevBtn.disabled=(idx<=0); if (nextBtn) nextBtn.disabled=(idx>=seq.length-1) }
+
+    function showAll(){ cardsGrid.classList.remove('single'); allCards.forEach(function(c){ c.classList.add('active') }); Array.from(toc.querySelectorAll('a')).forEach(function(a){ a.classList.remove('active') }); summaryPanel.style.display='none' }
+    if (prevBtn) prevBtn.addEventListener('click', function(){ selectByIndex(getActiveIndex()-1) })
+    if (nextBtn) nextBtn.addEventListener('click', function(){ selectByIndex(getActiveIndex()+1) })
+    if (showAllBtn) showAllBtn.addEventListener('click', showAll)
+
+    document.addEventListener('keydown', function(e){ if (!cardsGrid.classList.contains('single')) return; if (e.key==='ArrowLeft') selectByIndex(getActiveIndex()-1); if (e.key==='ArrowRight') selectByIndex(getActiveIndex()+1) })
+
+    // Day counter & progress
+    function updateDayCounterById(id){
+      var idx = sequenceIds.indexOf(id)
+      if (idx<0) idx = getActiveIndex()
+      var total = seq.length, current = idx+1
+      if (dayLabel) dayLabel.textContent = 'Día '+ current + ' de ' + total
+      if (progressFill) progressFill.style.width = (100*current/total)+'%'
     }
 
-    if (showAllBtn) { showAllBtn.addEventListener('click',showAll) }
-
-    // Hook TOC clicks
-    toc.addEventListener('click',function(e){
-      var a=e.target.closest ? e.target.closest('a') : null
-      if(!a) return
-      e.preventDefault()
-      selectCard(a.getAttribute('data-target'))
-    })
-
-    // Initial state: pick today if between 12–26 Nov, else first card
+    // Init: map calendar dates 12..26 Nov to sequence order
     function initSelect(){
-      var today=new Date()
-      var m=today.getMonth() // 0-based, Nov=10
-      var d=today.getDate()
-      var map={12:'d-12',13:'d-12',14:'d-14',15:'d-14',16:'d-16',17:'d-17',18:'d-18',19:'d-19',20:'d-19',21:'d-21',22:'d-22',23:'d-23',24:'d-23',25:'d-25',26:'d-26'}
-      var id=(m===10 && map[d])? map[d] : (cards[0]? cards[0].id : null)
-      // Mark matching TOC entry as 'now'
-      Array.from(toc.querySelectorAll('a')).forEach(function(a){
-        var dayEl = a.querySelector('.day')
-        var txt = dayEl ? dayEl.textContent : ''
-        if (m===10 && txt.indexOf(d.toString())>-1) { a.classList.add('now') }
-      })
-      if (id) { selectCard(id) }
+      var today=new Date(); var m=today.getMonth(); var d=today.getDate();
+      var startDay=12, endDay=26; var id
+      if (m===10 && d>=startDay && d<=endDay){ id = sequenceIds[d-startDay] } else { id = sequenceIds[0] }
+      Array.from(toc.querySelectorAll('a')).forEach(function(a){ a.classList.toggle('now', a.getAttribute('data-target')===id) })
+      selectCard(id)
     }
 
-    loadChecks()
-    initSelect()
+    // TOC clicks
+    toc.addEventListener('click',function(e){ var a=e.target.closest? e.target.closest('a'):null; if(!a) return; e.preventDefault(); selectCard(a.getAttribute('data-target')) })
 
-    // --- Simple runtime test output for debugging
-    try {
-      var kpiBox = document.querySelector('.kpi .box')
-      if (kpiBox) { kpiBox.title = 'JS OK · '+cards.length+' bloques · '+allChecks.length+' tareas'; }
-    } catch(e) {}
+    // Checks + start
+    var KEYCHK='plan_platon_flusser_progress_v3'
+    ;(function(){
+      var saved; try{ saved=JSON.parse(localStorage.getItem(KEYCHK)||'{}') }catch(e){ saved={} }
+    })()
+    loadChecks(); initSelect()
+
+    // Runtime tests
+    try{ var kpi=document.querySelector('.kpi .box'); var tests=[]; tests.push({name:'seq length = 15', pass: seq.length===15}); tests.push({name:'TOC matches seq', pass: toc.querySelectorAll('a').length===seq.length}); var pass=tests.filter(function(t){return t.pass}).length; if(kpi){kpi.title='JS OK · '+pass+'/'+tests.length+' tests';} }catch(e){}
   </script>
 </body>
 </html>
